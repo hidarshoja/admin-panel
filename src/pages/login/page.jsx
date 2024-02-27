@@ -53,11 +53,7 @@ export default function Login() {
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24 w-1/2" dir='rtl'>
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div className='w-full flex flex-col items-center justify-center'>
-              <img
-                className="h-32 w-32"
-                src="/img/dow.png"
-                alt="Your Company"
-              />
+             
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-color2">
               به حساب خود وارد شوید
               </h2>
