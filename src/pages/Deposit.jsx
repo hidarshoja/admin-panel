@@ -207,13 +207,13 @@ export default function Deposit() {
   const selectedItem = BoxDashboardItem.find(item => item.id === state);
   
   // اگر عنصر با آی دی مورد نظر پیدا شود، مقدار title آن را نمایش دهید
-  const title = selectedItem ? selectedItem.title : "عنصر مورد نظر یافت نشد";
+  const title = selectedItem ? selectedItem.title : "";
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div>
         <h1 className="block text-gray-700 text-lg font-bold mb-2 py-4 ">
-            برداشت ها در { title }
+            برداشت ها  { title }
         </h1>
       </div>
       <div className="mt-8 flow-root">

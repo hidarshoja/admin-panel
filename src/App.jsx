@@ -165,10 +165,11 @@ function App() {
                             <ul role="list" className="-mx-2 space-y-1">
                               {navigation.map((item) => (
                                 <li key={item.name} 
-                                onClick={() => setSidebarOpen(false)}
+                               
                                 >
                                   {!item.children ? (
                                     <Link
+                                    onClick={() => setSidebarOpen(false)}
                                       to={item.href}
                                       className={classNames(
                                         item.current
