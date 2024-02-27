@@ -89,7 +89,7 @@ export default function BoxDashboard() {
               >
                 <span>
                   <img
-                    src="../../public/img/money.png"
+                    src="/img/money.png"
                     width="35px"
                     alt="money"
                   />
@@ -101,7 +101,7 @@ export default function BoxDashboard() {
             <div className="flex flex-col items-center justify-between w-1/3 h-auto p-2 bg-green-300 rounded-lg cursor-pointer">
               <span>
                 <img
-                  src="../../public/img/reports.png"
+                  src="/img/reports.png"
                   width="35px"
                   alt="money"
                 />
@@ -114,7 +114,7 @@ export default function BoxDashboard() {
               >
                 <span>
                   <img
-                    src="../../public/img/convert.png"
+                    src="/img/convert.png"
                     width="35px"
                     alt="money"
                   />
