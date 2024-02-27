@@ -1,0 +1,33 @@
+/* @font-face {
+  font-family: "vazir";
+  src: url("/font/Vazirmatn-Medium.ttf");
+} */
+@font-face {
+  font-family: "vazir";
+  src: url("/font/IRANSans/IRANSansWeb.ttf");
+}
+
+*{
+  font-family: "vazir";
+}
+
+body{
+  direction: rtl;
+}
+.active{
+  @apply bg-green-800 text-white 
+}
+.custom-input{
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  box-sizing: border-box;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+  direction: ltr;
+}
