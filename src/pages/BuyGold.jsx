@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { Switch } from "@headlessui/react";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
@@ -11,7 +11,7 @@ function classNames(...classes) {
 
 export default function BuyGold() {
   const [data, setData] = useState(null); // جهت مقدار تیبل
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,24 +35,7 @@ export default function BuyGold() {
       code: "5919950960",
       lastName: "شجاع",
       mobaile: "09159886129",
-      wallet: [
-        {
-          pos: false,
-          درگاه: true,
-          حساب: false,
-          چک: false,
-          کارت: true,
-          Vip: false,
-          USDT: false,
-          Bitcoin: false,
-          Eth: true,
-          درهم: false,
-          "حواله دلار": false,
-          "حواله یورو": true,
-          "طلای آب شده": false,
-          سکه: true,
-        }
-      ],
+
       state: false,
     },
     {
@@ -62,24 +45,6 @@ export default function BuyGold() {
       name: "حیدر ",
       lastName: "احمدی",
       state: true,
-      wallet: [
-        {
-          pos: true,
-          درگاه: true,
-          حساب: false,
-          چک: true,
-          کارت: false,
-          Vip: false,
-          USDT: true,
-          Bitcoin: false,
-          Eth: true,
-          درهم: false,
-          "حواله دلار": false,
-          "حواله یورو": false,
-          "طلای آب شده": true,
-          سکه: false,
-        }
-      ],
     },
     {
       id: 3,
@@ -88,30 +53,10 @@ export default function BuyGold() {
       name: "علی ",
       lastName: "امیری",
       state: false,
-      wallet: [
-        {
-          pos: false,
-          درگاه: true,
-          حساب: false,
-          چک: true,
-          کارت: false,
-          Vip: false,
-          USDT: false,
-          Bitcoin: false,
-          Eth: true,
-          درهم: false,
-          "حواله دلار": false,
-          "حواله یورو": false,
-          "طلای آب شده": false,
-          سکه: false,
-        }
-      ],
     },
     // More people...
   ];
   const [statuses, setStatuses] = useState(people.map((obj) => obj.state));
-
- 
 
   const handleSwitchChange = (index) => {
     const newStatuses = [...statuses];
@@ -221,88 +166,21 @@ export default function BuyGold() {
                         {person.mobaile}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                        {person.wallet.length > 0 && (
-                          <select
-                            name={`wallet-${person.id}`}
-                            id={`wallet-${person.id}`}
-                            className="border border-1 border-gray-400 rounded-lg w-24 outline-none"
-                          >
-                            {person.wallet[0] &&
-                              Object.entries(person.wallet[0]).map(
-                                ([key, value]) =>
-                                  value && (
-                                    <option key={key} value={key}>
-                                      {key}
-                                    </option>
-                                  )
-                              )}
-                          </select>
-                        )}
-                      </td>
-                      <td
-                        className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center"
-                        dir="ltr"
-                      >
-                        <Switch
-                          checked={statuses[index]}
-                          onChange={() => handleSwitchChange(index)}
-                          className={classNames(
-                            statuses[index] ? "bg-indigo-600" : "bg-gray-200",
-                            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                          )}
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                          onClick={() =>
+                            navigate("/harvest", { state: person })
+                          }
                         >
-                          <span className="sr-only">استفاده از تنظیمات</span>
-                          <span
-                            className={classNames(
-                              statuses[index]
-                                ? "translate-x-5"
-                                : "translate-x-0",
-                              "pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                            )}
-                          >
-                            <span
-                              className={classNames(
-                                statuses[index]
-                                  ? "opacity-0 duration-100 ease-out"
-                                  : "opacity-100 duration-200 ease-in",
-                                "absolute inset-0 flex h-full w-full items-center justify-center transition-opacity"
-                              )}
-                              aria-hidden="true"
-                            >
-                              <svg
-                                className="h-3 w-3 text-gray-400"
-                                fill="none"
-                                viewBox="0 0 12 12"
-                              >
-                                <path
-                                  d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
-                                  stroke="currentColor"
-                                  strokeWidth={2}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </span>
-                            <span
-                              className={classNames(
-                                statuses[index]
-                                  ? "opacity-100 duration-200 ease-in"
-                                  : "opacity-0 duration-100 ease-out",
-                                "absolute inset-0 flex h-full w-full items-center justify-center transition-opacity"
-                              )}
-                              aria-hidden="true"
-                            >
-                              <svg
-                                className="h-3 w-3 text-indigo-600"
-                                fill="currentColor"
-                                viewBox="0 0 12 12"
-                              >
-                                <path d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z" />
-                              </svg>
-                            </span>
-                          </span>
-                        </Switch>
-                       
+                          مشاهده{" "}
+                        </button>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                        <select className="bg-white border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500">
+                          <option value="active">فعال</option>
+                          <option value="inactive">غیرفعال</option>
+                          <option value="show">نمایش</option>
+                        </select>
                       </td>
                     </tr>
                   ))}

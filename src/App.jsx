@@ -210,8 +210,8 @@ function App() {
                                             {item.children.map((subItem) => (
                                               <li key={subItem.name}>
                                                 <Disclosure.Button
-                                                  as="a"
-                                                  href={subItem.href}
+                                                  as={Link}
+                                                  to={subItem.href}
                                                   className={classNames(
                                                     subItem.current
                                                       ? "bg-gray-50"
@@ -303,8 +303,8 @@ function App() {
                                     {item.children.map((subItem) => (
                                       <li key={subItem.name}>
                                         <Disclosure.Button
-                                          as="a"
-                                          href={subItem.href}
+                                          as={Link}
+                                          to={subItem.href}
                                           className={classNames(
                                             subItem.current
                                               ? "bg-gray-50"
