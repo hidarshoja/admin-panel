@@ -20,7 +20,7 @@ export default function RegisterUsers() {
     fetchData();
   }, []);
 
-  console.log('data', data)
+ 
 
   const people = [
     {

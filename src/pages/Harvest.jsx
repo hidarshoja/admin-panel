@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
-import DatePicker, { DateObject } from "react-multi-date-picker";
+import { useState } from "react";
+import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import TabsComponent from "../components/TabsComponent";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate  , useLocation } from "react-router-dom";
 
 export default function Harvest() {
   const [value, setValue] = useState(new Date());
   const [value2, setValue2] = useState(new Date());
-   const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const person = location.state;
+
+
 
   const [checkboxes, setCheckboxes] = useState({
     pos: false,
@@ -28,6 +32,7 @@ export default function Harvest() {
     سکه: false,
   });
 
+  let trueKeys =Object.keys(checkboxes).filter(key => checkboxes[key]);
   const handleCheckboxChange = (name) => {
     setCheckboxes({
       ...checkboxes,
@@ -35,19 +40,34 @@ export default function Harvest() {
     });
   };
 
+
+
+
   const handleClick = async () => {
     try {
+      const formData = {
+        name: document.getElementById("name").value,
+        lastName: document.getElementById("lastName").value,
+        customer: document.getElementById("customer").value,
+        mobile: document.getElementById("Mobile").value,
+        code: document.getElementById("code").value,
+        terminalID: document.getElementById("terminalID").value,
+        birthDate: value2, // مقدار DatePicker برای تاریخ تولد
+        bankName: document.getElementsByName("payment_method")[0].value, // مقدار select برای نام بانک
+        joinDate: value, // مقدار DatePicker برای تاریخ عضویت
+        checkboxes: trueKeys // مقادیر چک باکس‌ها
+      };
+  
       const response = await axios.post(
         "https://jsonplaceholder.typicode.com/posts",
-        { data: "your data here" }
+        formData
       );
+  
       console.log("Response:", response.data);
-      navigate("/registerUsers")
+      navigate("/registerUsers");
     } catch (error) {
       console.error("Error:", error);
     }
-    navigate("/registerUsers");
-    console.log('text', "text")
   };
 
   return (
@@ -70,6 +90,7 @@ export default function Harvest() {
                 id="name"
                 type="text"
                 placeholder="نام خود را وارد کنید"
+                value={person?.name}
               />
             </div>
             <div className="mb-4 w-full md:w-1/3">
@@ -84,6 +105,7 @@ export default function Harvest() {
                 id="lastName"
                 type="text"
                 placeholder="نام خانوادگی خود را وارد کنید"
+                value={person?.lastName}
               />
             </div>
             <div className="mb-4 w-full md:w-1/3">
@@ -91,7 +113,7 @@ export default function Harvest() {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="customer"
               >
-                نام مشتری
+                نام پرفراژ
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -145,7 +167,7 @@ export default function Harvest() {
               />
             </div>
           </div>
-          <div className="flex flex-col gap-2 md:flex-row items-start md:items-center justify-between">
+          <div className="flex flex-col gap-2 md:flex-row items-center md:items-center justify-between">
             <div>
               <span className="block text-gray-700 text-sm font-bold mb-2">
                 تاریخ تولد{" "}
@@ -158,6 +180,27 @@ export default function Harvest() {
                 calendarPosition="bottom-right"
                 inputClass="custom-input"
               />
+            </div>
+            <div>
+            <span className="block text-gray-700 text-sm font-bold mb-2">
+                نام بانک
+              </span>
+              <select
+                name="payment_method"
+                className="border border-1 border-gray-300 px-3 py-1.5 rounded-lg w-44 outline-none"
+              >
+                <option value="ملی">ملی</option>
+                <option value="کشاورزی">کشاورزی</option>
+                <option value="گردشگری">گردشگری</option>
+                <option value="ملت">ملت</option>
+                <option value="رفاه">رفاه</option>
+                <option value="تجارت">تجارت</option>
+                <option value="سینا">سینا</option>
+                <option value="آینده">آینده</option>
+                <option value="پست بانک">پست بانک</option>
+                <option value="سپه">سپه</option>
+                <option value="پاسارگاد">پاسارگاد</option>
+              </select>
             </div>
             <div>
               <span className="block text-gray-700 text-sm font-bold mb-2">
@@ -190,25 +233,26 @@ export default function Harvest() {
                     checked={checked}
                     onChange={() => handleCheckboxChange(name)}
                   />
+                  
                   <label htmlFor={name}>{name}</label>
                 </div>
               ))}
             </div>
           </div>
           <div>
-            <TabsComponent />
+            
+             {trueKeys.length > 0 &&  <TabsComponent trueKeys ={trueKeys}/>}
             <div className="flex gap-2 mt-5">
               <button className="flex items-center justify-center w-1/2 bg-red-500 rounded-lg py-1 text-color3 hover:bg-red-700">
                 انصراف
               </button>
-                <button
-                  type="button"
-                  onClick={handleClick}
-                  className="flex items-center justify-center w-full bg-green-500 rounded-lg py-1 text-color3  hover:bg-green-700"
-                >
-                   ثبت
-                </button>
-              
+              <button
+                type="button"
+                onClick={handleClick}
+                className="flex items-center justify-center w-full bg-green-500 rounded-lg py-1 text-color3  hover:bg-green-700"
+              >
+                ثبت
+              </button>
             </div>
           </div>
         </div>

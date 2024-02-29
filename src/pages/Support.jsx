@@ -1,6 +1,7 @@
 
+import { useState , useEffect } from "react";
 import { Link , Outlet } from "react-router-dom";
-
+import axios from "axios";
 
 
 const handleStatusColor = (status) => {
@@ -17,35 +18,22 @@ const handleStatusColor = (status) => {
 };
 
 export default function Support({ users }) {
+  const [data, setData] = useState(null); // جهت مقدار تیبل
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts"
+        );
+        setData(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-
-  
-// let users = [
-//     {
-//       id: 1,
-//       user: "علی شجاع",
-//       question: "نحوه خرید طلا چگونه است ؟",
-//       date: "1402/10/11",
-//       time: "20:12:55",
-//       state: "رد شده",
-//     },
-//     {
-//       id: 2,
-//       user: "علی احمدی",
-//       question: "نحوه خرید فروش چگونه است ؟",
-//       date: "1401/12/21",
-//       time: "10:22:05",
-//       state: "پاسخ داده",
-//     },
-//     {
-//       id: 3,
-//       user: "محمود رضایی",
-//       question: "نحوه  ثبت نام چگونه است ؟",
-//       date: "1400/02/11",
-//       time: "12:22:05",
-//       state: "در انتظار",
-//     },
-//   ];
+    fetchData();
+  }, []);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">

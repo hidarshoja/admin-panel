@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { Switch } from "@headlessui/react";
+import { useState, useEffect } from "react";
 
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
@@ -9,8 +9,62 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const people = [
+  {
+    id: 1,
+    name: "حیدر شجاع",
+    code: "5919950960",
+    lastName: "شجاع",
+    mobaile: "09159886129",
+
+    state: false,
+  },
+  {
+    id: 2,
+    code: "5919960418",
+    mobaile: "09159886129",
+    name: "حیدر احمدی",
+
+    state: true,
+  },
+  {
+    id: 3,
+    code: "06728859432",
+    mobaile: "09159886129",
+    name: "علی رسولی",
+    state: false,
+  },
+  {
+    id: 4,
+    name: "میلاد فاضلیان",
+    code: "5919950960",
+    mobaile: "09159886129",
+
+    state: false,
+  },
+  {
+    id: 5,
+    code: "5919960418",
+    mobaile: "09159886129",
+    name: "مسعود رسولی",
+
+    state: true,
+  },
+  {
+    id: 6,
+    code: "06728859432",
+    mobaile: "09159886129",
+    name: "علی رضایی",
+
+    state: false,
+  },
+];
+
 export default function BuyGold() {
   const [data, setData] = useState(null); // جهت مقدار تیبل
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredPeople, setFilteredPeople] = useState(people);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,100 +82,32 @@ export default function BuyGold() {
     fetchData();
   }, []);
 
-  const people = [
-    {
-      id: 1,
-      name: "علی ",
-      code: "5919950960",
-      lastName: "شجاع",
-      mobaile: "09159886129",
-      wallet: [
-        {
-          pos: false,
-          درگاه: true,
-          حساب: false,
-          چک: false,
-          کارت: true,
-          Vip: false,
-          USDT: false,
-          Bitcoin: false,
-          Eth: true,
-          درهم: false,
-          "حواله دلار": false,
-          "حواله یورو": true,
-          "طلای آب شده": false,
-          سکه: true,
-        }
-      ],
-      state: false,
-    },
-    {
-      id: 2,
-      code: "5919960418",
-      mobaile: "09159886129",
-      name: "حیدر ",
-      lastName: "احمدی",
-      state: true,
-      wallet: [
-        {
-          pos: true,
-          درگاه: true,
-          حساب: false,
-          چک: true,
-          کارت: false,
-          Vip: false,
-          USDT: true,
-          Bitcoin: false,
-          Eth: true,
-          درهم: false,
-          "حواله دلار": false,
-          "حواله یورو": false,
-          "طلای آب شده": true,
-          سکه: false,
-        }
-      ],
-    },
-    {
-      id: 3,
-      code: "06728859432",
-      mobaile: "09159886129",
-      name: "علی ",
-      lastName: "امیری",
-      state: false,
-      wallet: [
-        {
-          pos: false,
-          درگاه: true,
-          حساب: false,
-          چک: true,
-          کارت: false,
-          Vip: false,
-          USDT: false,
-          Bitcoin: false,
-          Eth: true,
-          درهم: false,
-          "حواله دلار": false,
-          "حواله یورو": false,
-          "طلای آب شده": false,
-          سکه: false,
-        }
-      ],
-    },
-    // More people...
-  ];
-  const [statuses, setStatuses] = useState(people.map((obj) => obj.state));
-
- 
-
-  const handleSwitchChange = (index) => {
-    const newStatuses = [...statuses];
-    newStatuses[index] = !newStatuses[index];
-    setStatuses(newStatuses);
-
-    console.log(
-      `وضعیت جدید برای ابجکت با آیدی ${people[index].id}:`,
-      newStatuses[index]
+  const handleChange = (event) => {
+    setSearchValue(event.target.value);
+    const filtered = people.filter((person) =>
+      person.name.includes(event.target.value.trim())
     );
+    setFilteredPeople(filtered);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const postData = filteredPeople.map((person) => ({
+        id: person.id,
+        name: person.name,
+        code: person.code,
+        mobaile: person.mobaile,
+        state: person.state ? "active" : "inactive", // تبدیل وضعیت به مقدار فعال یا غیرفعال
+      }));
+
+      const response = await axios.post(
+        "https://jsonplaceholder.typicode.com/posts",
+        postData
+      );
+      console.log("Data sent successfully:", response.data);
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
   };
 
   return (
@@ -136,7 +122,7 @@ export default function BuyGold() {
               جستجو کردن
             </label>
             <MagnifyingGlassIcon
-              className=" absolute inset-y-0 left-0 h-full w-5 text-gray-400 cursor-pointer"
+              className="absolute inset-y-0 left-0 h-full w-5 text-gray-400 cursor-pointer"
               aria-hidden="true"
             />
             <input
@@ -145,6 +131,9 @@ export default function BuyGold() {
               placeholder="جستجو کنید..."
               type="search"
               name="search"
+              value={searchValue}
+              onChange={handleChange}
+              // onKeyDown={handleKeyPress}
             />
           </form>
         </div>
@@ -166,15 +155,9 @@ export default function BuyGold() {
                       scope="col"
                       className="px-3 py-4 text-center text-sm font-semibold text-gray-900"
                     >
-                      نام
+                      نام و نام خانوادگی
                     </th>
 
-                    <th
-                      scope="col"
-                      className="py-4 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      نام خانوادگی
-                    </th>
                     <th
                       scope="col"
                       className="px-3 py-4 text-center text-sm font-semibold text-gray-900"
@@ -203,7 +186,7 @@ export default function BuyGold() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person, index) => (
+                  {filteredPeople.map((person, index) => (
                     <tr key={person.id}>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
                         {person.id}
@@ -211,9 +194,7 @@ export default function BuyGold() {
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
                         {person.name}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                        {person.lastName}
-                      </td>
+
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
                         {person.code}
                       </td>
@@ -221,93 +202,36 @@ export default function BuyGold() {
                         {person.mobaile}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                        {person.wallet.length > 0 && (
-                          <select
-                            name={`wallet-${person.id}`}
-                            id={`wallet-${person.id}`}
-                            className="border border-1 border-gray-400 rounded-lg w-24 outline-none"
-                          >
-                            {person.wallet[0] &&
-                              Object.entries(person.wallet[0]).map(
-                                ([key, value]) =>
-                                  value && (
-                                    <option key={key} value={key}>
-                                      {key}
-                                    </option>
-                                  )
-                              )}
-                          </select>
-                        )}
-                      </td>
-                      <td
-                        className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center"
-                        dir="ltr"
-                      >
-                        <Switch
-                          checked={statuses[index]}
-                          onChange={() => handleSwitchChange(index)}
-                          className={classNames(
-                            statuses[index] ? "bg-indigo-600" : "bg-gray-200",
-                            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                          )}
+                        <button
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                          onClick={() =>
+                            navigate("/harvest", { state: person })
+                          }
                         >
-                          <span className="sr-only">استفاده از تنظیمات</span>
-                          <span
-                            className={classNames(
-                              statuses[index]
-                                ? "translate-x-5"
-                                : "translate-x-0",
-                              "pointer-events-none relative inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                            )}
-                          >
-                            <span
-                              className={classNames(
-                                statuses[index]
-                                  ? "opacity-0 duration-100 ease-out"
-                                  : "opacity-100 duration-200 ease-in",
-                                "absolute inset-0 flex h-full w-full items-center justify-center transition-opacity"
-                              )}
-                              aria-hidden="true"
-                            >
-                              <svg
-                                className="h-3 w-3 text-gray-400"
-                                fill="none"
-                                viewBox="0 0 12 12"
-                              >
-                                <path
-                                  d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
-                                  stroke="currentColor"
-                                  strokeWidth={2}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </span>
-                            <span
-                              className={classNames(
-                                statuses[index]
-                                  ? "opacity-100 duration-200 ease-in"
-                                  : "opacity-0 duration-100 ease-out",
-                                "absolute inset-0 flex h-full w-full items-center justify-center transition-opacity"
-                              )}
-                              aria-hidden="true"
-                            >
-                              <svg
-                                className="h-3 w-3 text-indigo-600"
-                                fill="currentColor"
-                                viewBox="0 0 12 12"
-                              >
-                                <path d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z" />
-                              </svg>
-                            </span>
-                          </span>
-                        </Switch>
-                       
+                          مشاهده{" "}
+                        </button>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                        <select className="bg-white border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:border-blue-500">
+                          <option value="active">فعال</option>
+                          <option value="inactive">غیرفعال</option>
+                          <option value="show">نمایش</option>
+                        </select>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="w-full flex flex-col md:flex-row gap-3 items-center justify-end py-10">
+              <button className="w-2/3 md:w-1/6 py-1 bg-red-500 hover:bg-red-800 rounded-lg text-color3">
+                انصراف
+              </button>
+              <button
+               onClick={handleSubmit}
+              className="w-2/3 md:w-1/6 py-1 bg-green-500 hover:bg-green-800 rounded-lg text-color3">
+                ثبت
+              </button>
             </div>
           </div>
         </div>

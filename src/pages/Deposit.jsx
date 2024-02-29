@@ -3,7 +3,7 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import axios from "axios";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 export default function Deposit() {
   const [data, setData] = useState(null); // جهت مقدار تیبل
@@ -18,68 +18,81 @@ export default function Deposit() {
   let BoxDashboardItem = [
     {
       id: 1,
-    
+
       title: "کیف پول ریالی POS",
       price: 100000,
     },
     {
       id: 2,
-     
+
       title: "کیف پول درگاه اینترنتی",
       price: 300000,
     },
     {
       id: 3,
-     
+
       title: "کیف ریالی حساب",
       price: 180000,
     },
     {
       id: 4,
-     
+
       title: "کیف ریالی چک",
       price: 500000,
     },
     {
       id: 5,
-     
+
       title: "کیف ریالی VIP",
       price: 1100000,
     },
     {
       id: 6,
-     
+
       title: "کیف پول کارت",
       price: 1800000,
     },
     {
       id: 7,
-     
+
       title: "تتر",
       price: 100000,
       unit: "USDT",
     },
     {
       id: 8,
-     
+
       title: "رمز ارز",
       price: 300000,
       unit: "(BTC)",
     },
     {
       id: 9,
-    
+
       title: " ریالی",
       price: 180000,
       unit: "ریال",
     },
     {
       id: 10,
-     
+
       title: " طلا",
       price: 5,
       unit: "گرم",
     },
+  ];
+
+  let users = [
+    { userId: 1, id: 1, name: "علی" },
+    { userId: 2, id: 2, name: "احمد" },
+    { userId: 3, id: 3, name: "سعید" },
+    { userId: 4, id: 4, name: "رسول" },
+    { userId: 5, id: 5, name: "رامین" },
+    { userId: 6, id: 6, name: "علی محمد" },
+    { userId: 7, id: 7, name: "سبا" },
+    { userId: 8, id: 8, name: "سینا" },
+    { userId: 9, id: 9, name: "حسام" },
+    { userId: 10, id: 10, name: "حامد" },
   ];
 
   const toggleModalBtn = () => {
@@ -111,7 +124,7 @@ export default function Deposit() {
     fetchData();
   }, []);
 
-  console.log(data);
+  //console.log(data);
   const withdrawal = [
     {
       id: 1,
@@ -204,16 +217,46 @@ export default function Deposit() {
     console.log(statuses);
   };
 
-  const selectedItem = BoxDashboardItem.find(item => item.id === state);
-  
+  const selectedItem = BoxDashboardItem.find((item) => item.id === state);
+
   // اگر عنصر با آی دی مورد نظر پیدا شود، مقدار title آن را نمایش دهید
   const title = selectedItem ? selectedItem.title : "";
+
+  // سرچ اینپوت
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState("");
+
+  const handleChangeInput = (event) => {
+    setSearchTerm(event.target.value);
+    const filteredResults = users.filter((user) =>
+      user.name.includes(event.target.value)
+    );
+    setSearchResults(filteredResults);
+  };
+
+  const handleSelectValue = (value, userId) => {
+    setInputValue(value);
+
+    setSelectedUserId(userId);
+    setSearchResults([]);
+    setSearchTerm(value);
+  };
+
+  // اینپوت price
+  const [inputPriceValue, setInputPriceValue] = useState('');
+
+  const handleChangePrice = (event) => {
+    const value = event.target.value;
+    setInputPriceValue(value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+  };
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div>
         <h1 className="block text-gray-700 text-lg font-bold mb-2 py-4 ">
-            برداشت ها  { title }
+          برداشت ها {title}
         </h1>
       </div>
       <div className="mt-8 flow-root">
@@ -326,7 +369,11 @@ export default function Deposit() {
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                        {person.code}
+                      <input
+                          type="text"
+                          className="py-[2px] border border-1 border-gray-400 outline-none rounded-md w-20 px-1"
+                          
+                        />
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
                         {person.wallet.length > 0 && (
@@ -396,7 +443,7 @@ export default function Deposit() {
       <div className="mt-8 flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+            <div className="shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-300">
                 <thead className="bg-gray-50">
                   <tr>
@@ -413,7 +460,12 @@ export default function Deposit() {
                     >
                       نام مشتری
                     </th>
-
+                    <th
+                      scope="col"
+                      className="px-3 py-4 text-center text-sm font-semibold text-gray-900"
+                    >
+                      userId
+                    </th>
                     <th
                       scope="col"
                       className="px-3 py-4 text-center text-sm font-semibold text-gray-900"
@@ -458,11 +510,35 @@ export default function Deposit() {
                           }}
                         />
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                        {person.user}
+
+                      <td className="flex flex-col relative whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center items-center justify-center">
                         <input
                           type="text"
                           className="py-[2px] border border-1 border-gray-400 outline-none rounded-md w-32 px-1"
+                          placeholder="جستجو..."
+                          value={searchTerm}
+                          onChange={handleChangeInput}
+                        />
+                        <div className="mt-2 absolute top-8 z-10 w-32 border border-gray-400 bg-white rounded-md px-1">
+                          {searchResults.map((user) => (
+                            <div
+                              key={user.id}
+                              className="py-1 hover:bg-gray-400 hover:text-white"
+                              onClick={() =>
+                                handleSelectValue(user.name, user.userId)
+                              }
+                            >
+                              {user.name}
+                            </div>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
+                        <input
+                          type="text"
+                          className="py-[2px] border border-1 border-gray-400 outline-none rounded-md w-32 px-1"
+                          value={selectedUserId}
+                          readOnly
                         />
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
@@ -491,10 +567,11 @@ export default function Deposit() {
                         {new Intl.NumberFormat("fa-IR").format(person.price)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
-                        {person.price2}
                         <input
                           type="text"
                           className="py-[2px] border border-1 border-gray-400 outline-none rounded-md w-32 px-1"
+                          value={inputPriceValue}
+                          onChange={handleChangePrice}
                         />
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">
@@ -555,17 +632,15 @@ export default function Deposit() {
                 </tbody>
               </table>
             </div>
-              <div className="w-full flex flex-col md:flex-row gap-3 items-center justify-around py-10">
-                <div className="w-3/6">
-                  
-                </div>
-                <button className="w-2/3 md:w-1/6 py-1 bg-red-500 hover:bg-red-800 rounded-lg text-color3">
-                  انصراف
-                </button>
-                <button className="w-2/3 md:w-1/6 py-1 bg-green-500 hover:bg-green-800 rounded-lg text-color3">
-                  ثبت
-                </button>
-              </div>
+            <div className="w-full flex flex-col md:flex-row gap-3 items-center justify-around py-10">
+              <div className="w-3/6"></div>
+              <button className="w-2/3 md:w-1/6 py-1 bg-red-500 hover:bg-red-800 rounded-lg text-color3">
+                انصراف
+              </button>
+              <button className="w-2/3 md:w-1/6 py-1 bg-green-500 hover:bg-green-800 rounded-lg text-color3">
+                ثبت
+              </button>
+            </div>
           </div>
         </div>
       </div>
