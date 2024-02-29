@@ -15,11 +15,15 @@ import { LuEuro } from "react-icons/lu";
 import { SiBit } from "react-icons/si";
 import { FaEthereum } from "react-icons/fa";
 import { MdOutlineCurrencyExchange } from "react-icons/md";
+
 import axios from "axios";
+
+
 
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("walletBalance");
+
 
   
 
@@ -155,6 +159,7 @@ export default function Dashboard() {
     },
   ];
   
+
 
   return (
     <div className="w-full">

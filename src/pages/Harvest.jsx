@@ -39,8 +39,7 @@ export default function Harvest() {
       [name]: !checkboxes[name],
     });
   };
-
-
+  console.log('trueKeys', trueKeys)
 
 
   const handleClick = async () => {
@@ -68,6 +67,7 @@ export default function Harvest() {
     } catch (error) {
       console.error("Error:", error);
     }
+
   };
 
   return (

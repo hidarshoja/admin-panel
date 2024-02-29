@@ -634,9 +634,13 @@ export default function Deposit() {
             </div>
             <div className="w-full flex flex-col md:flex-row gap-3 items-center justify-around py-10">
               <div className="w-3/6"></div>
+
               <button className="w-2/3 md:w-1/6 py-1 bg-red-500 hover:bg-red-800 rounded-lg text-color3">
                 انصراف
               </button>
+
+              
+
               <button className="w-2/3 md:w-1/6 py-1 bg-green-500 hover:bg-green-800 rounded-lg text-color3">
                 ثبت
               </button>

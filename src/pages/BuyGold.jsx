@@ -63,8 +63,10 @@ const people = [
 export default function BuyGold() {
   const [data, setData] = useState(null); // جهت مقدار تیبل
   const navigate = useNavigate();
+
   const [searchValue, setSearchValue] = useState("");
   const [filteredPeople, setFilteredPeople] = useState(people);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,10 +84,14 @@ export default function BuyGold() {
     fetchData();
   }, []);
 
+
   const handleChange = (event) => {
     setSearchValue(event.target.value);
     const filtered = people.filter((person) =>
       person.name.includes(event.target.value.trim())
+
+
+
     );
     setFilteredPeople(filtered);
   };
